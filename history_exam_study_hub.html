@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Exam Study Hub & Revision App</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* 3D Flip Card Effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        .card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-flipped {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation Bar -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('notes')">
+                    <div class="bg-amber-500 p-2 rounded-lg text-slate-900 font-black">
+                        <i class="fa-solid fa-book-bookmark text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white block leading-none">HISTO<span class="text-amber-400">HUB</span></span>
+                        <span class="text-xs text-slate-400">Chapters 1–5 Revision Suite</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('notes')" id="nav-notes" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition text-amber-400 bg-slate-800">
+                        <i class="fa-solid fa-file-lines mr-1.5"></i> Study Notes
+                    </button>
+                    <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-clone mr-1.5"></i> Flashcards
+                    </button>
+                    <button onclick="switchTab('timeline')" id="nav-timeline" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-timeline mr-1.5"></i> Timeline
+                    </button>
+                    <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-list-check mr-1.5"></i> Quiz Engine
+                    </button>
+                    <button onclick="switchTab('peel')" id="nav-peel" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-pen-nib mr-1.5"></i> PEEL Builder
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 text-slate-400 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 border-t border-slate-700 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('notes'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-amber-400 bg-slate-900">
+                <i class="fa-solid fa-file-lines mr-2"></i> Study Notes
+            </button>
+            <button onclick="switchTab('flashcards'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-clone mr-2"></i> Flashcards
+            </button>
+            <button onclick="switchTab('timeline'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-timeline mr-2"></i> Timeline
+            </button>
+            <button onclick="switchTab('quiz'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-list-check mr-2"></i> Quiz Engine
+            </button>
+            <button onclick="switchTab('peel'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-pen-nib mr-2"></i> PEEL Builder
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: STUDY NOTES SECTION -->
+        <section id="tab-notes" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Comprehensive History Notes</h1>
+                    <p class="text-slate-600 text-sm sm:text-base mt-1">Select a chapter below to access detailed summaries, key terms, and essential analysis.</p>
+                </div>
+                <!-- Chapter Selector Dropdown / Pills -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="selectChapterNotes(1)" id="note-btn-1" class="ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white shadow">Ch 1</button>
+                    <button onclick="selectChapterNotes(2)" id="note-btn-2" class="ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-700 hover:bg-slate-200">Ch 2</button>
+                    <button onclick="selectChapterNotes(3)" id="note-btn-3" class="ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-700 hover:bg-slate-200">Ch 3</button>
+                    <button onclick="selectChapterNotes(4)" id="note-btn-4" class="ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-700 hover:bg-slate-200">Ch 4</button>
+                    <button onclick="selectChapterNotes(5)" id="note-btn-5" class="ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-700 hover:bg-slate-200">Ch 5</button>
+                </div>
+            </div>
+
+            <!-- Notes Content Area -->
+            <div id="notes-content-container" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <!-- Dynamic Content Load -->
+            </div>
+        </section>
+
+        <!-- TAB 2: INTERACTIVE FLASHCARDS SECTION -->
+        <section id="tab-flashcards" class="hidden space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Active Recall Flashcards</h1>
+                    <p class="text-slate-600 text-sm sm:text-base mt-1">Master key concepts and dates. Click the card to flip and reveal the detailed answer.</p>
+                </div>
+                <!-- Filter Dropdown -->
+                <div class="flex items-center space-x-2">
+                    <label for="flashcard-filter" class="text-sm font-medium text-slate-600 whitespace-nowrap">Filter Topic:</label>
+                    <select id="flashcard-filter" onchange="filterFlashcards()" class="bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-sm font-medium text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        <option value="all">All Chapters (1–5)</option>
+                        <option value="1">Chapter 1: WWI & Peace Settlements</option>
+                        <option value="2">Chapter 2: League of Nations</option>
+                        <option value="3">Chapter 3: Interwar Rise of Dictators</option>
+                        <option value="4">Chapter 4: Outbreak of WWII in Europe</option>
+                        <option value="5">Chapter 5: WWII in Asia-Pacific</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Flashcard Container -->
+            <div class="max-w-xl mx-auto">
+                <div class="perspective-1000 min-h-[320px] sm:min-h-[360px] cursor-pointer" onclick="flipCard()">
+                    <div id="flashcard-inner" class="card-inner relative w-full h-full min-h-[320px] sm:min-h-[360px] transform-style-3d shadow-xl rounded-2xl bg-white border border-slate-200">
+                        
+                        <!-- Front Face -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden p-8 flex flex-col justify-between rounded-2xl bg-gradient-to-br from-slate-900 to-indigo-950 text-white">
+                            <div class="flex justify-between items-center">
+                                <span id="card-chapter-tag" class="text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full bg-indigo-500/30 text-indigo-300 border border-indigo-400/20">Chapter 1</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-arrows-rotate mr-1"></i> Click to Flip</span>
+                            </div>
+                            <div class="my-auto text-center px-4">
+                                <p id="card-question" class="text-xl sm:text-2xl font-bold leading-relaxed">Loading Question...</p>
+                            </div>
+                            <div class="text-center text-xs text-slate-400 font-medium">
+                                Card <span id="card-current-num">1</span> of <span id="card-total-num">20</span>
+                            </div>
+                        </div>
+
+                        <!-- Back Face -->
+                        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 p-8 flex flex-col justify-between rounded-2xl bg-white border-2 border-indigo-500 text-slate-800">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">Explanation / Answer</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-arrows-rotate mr-1"></i> Click to Flip</span>
+                            </div>
+                            <div class="my-auto text-left px-2 overflow-y-auto max-h-[220px]">
+                                <p id="card-answer" class="text-base sm:text-lg text-slate-700 leading-relaxed font-normal">Loading Answer...</p>
+                            </div>
+                            <div class="text-center text-xs text-slate-400">
+                                Click anywhere on card to switch back
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="flex items-center justify-between mt-6 px-4">
+                    <button onclick="prevCard()" class="px-5 py-2.5 bg-white border border-slate-300 rounded-xl font-semibold text-slate-700 hover:bg-slate-100 shadow-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i> <span>Previous</span>
+                    </button>
+                    <button onclick="shuffleCards()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 rounded-xl font-semibold text-slate-700 transition flex items-center space-x-2" title="Shuffle Cards">
+                        <i class="fa-solid fa-shuffle"></i> <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="nextCard()" class="px-5 py-2.5 bg-indigo-600 rounded-xl font-semibold text-white hover:bg-indigo-700 shadow transition flex items-center space-x-2">
+                        <span>Next</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: HISTORICAL TIMELINE SECTION -->
+        <section id="tab-timeline" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Interwar & WWII Interactive Timeline</h1>
+                <p class="text-slate-600 text-sm sm:text-base mt-1">Explore key historical milestones chronologically from 1919 Peace Treaties through to 1945.</p>
+            </div>
+
+            <!-- Timeline Vertical Layout -->
+            <div class="relative border-l-2 border-indigo-200 ml-4 sm:ml-32 space-y-8 py-4">
+                
+                <!-- Event 1 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1919</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">June 1919</span>
+                        <h3 class="text-lg font-bold text-slate-900">Signing of the Treaty of Versailles</h3>
+                        <p class="text-slate-600 text-sm mt-2">Germany is forced to sign the Treaty of Versailles, taking full blame for WWI (Clause 231 - War Guilt Clause), facing severe territorial losses, military restrictions, and massive financial reparations (£6.6 billion).</p>
+                        <span class="inline-block mt-3 text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 1: Peace Settlements</span>
+                    </div>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1920</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Jan 1920</span>
+                        <h3 class="text-lg font-bold text-slate-900">Establishment of the League of Nations</h3>
+                        <p class="text-slate-600 text-sm mt-2">Founded to promote international cooperation and maintain world peace. However, major powers like the USA never join, and USSR/Germany are initially excluded.</p>
+                        <span class="inline-block mt-3 text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 2: League of Nations</span>
+                    </div>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1922</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Oct 1922</span>
+                        <h3 class="text-lg font-bold text-slate-900">Mussolini's March on Rome</h3>
+                        <p class="text-slate-600 text-sm mt-2">Benito Mussolini and his Fascist Blackshirts stage a march on Rome. King Victor Emmanuel III appoints Mussolini Prime Minister, inaugurating Fascist dictatorship in Italy.</p>
+                        <span class="inline-block mt-3 text-xs bg-red-100 text-red-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 3: Rise of Dictators</span>
+                    </div>
+                </div>
+
+                <!-- Event 4 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1929</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Oct 1929</span>
+                        <h3 class="text-lg font-bold text-slate-900">Wall Street Crash & Great Depression</h3>
+                        <p class="text-slate-600 text-sm mt-2">Stock market crash triggers global economic collapse. Extreme poverty and unemployment fuel political radicalism in Germany and militarism in Japan.</p>
+                        <span class="inline-block mt-3 text-xs bg-purple-100 text-purple-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 3 & 5: Global Crisis</span>
+                    </div>
+                </div>
+
+                <!-- Event 5 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1931</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Sept 1931</span>
+                        <h3 class="text-lg font-bold text-slate-900">Mukden Incident & Invasion of Manchuria</h3>
+                        <p class="text-slate-600 text-sm mt-2">Japanese Kwantung Army stages a bomb attack near Mukden, using it as a pretext to invade Manchuria. The League of Nations fails to act decisively, leading Japan to leave the League.</p>
+                        <span class="inline-block mt-3 text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 2 & 5: WWII in Asia</span>
+                    </div>
+                </div>
+
+                <!-- Event 6 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1933</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Jan 1933</span>
+                        <h3 class="text-lg font-bold text-slate-900">Hitler Appointed Chancellor of Germany</h3>
+                        <p class="text-slate-600 text-sm mt-2">Exploiting fear of Communism and economic distress, Adolf Hitler is appointed Chancellor and quickly establishes total totalitarian rule, dismantling the Weimar Republic.</p>
+                        <span class="inline-block mt-3 text-xs bg-red-100 text-red-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 3: Rise of Dictators</span>
+                    </div>
+                </div>
+
+                <!-- Event 7 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1935</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Oct 1935</span>
+                        <h3 class="text-lg font-bold text-slate-900">Abyssinian Crisis</h3>
+                        <p class="text-slate-600 text-sm mt-2">Mussolini invades Abyssinia (Ethiopia). The League imposes half-hearted sanctions excluding oil and failing to close the Suez Canal, completely destroying the League's credibility.</p>
+                        <span class="inline-block mt-3 text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 2: League of Nations</span>
+                    </div>
+                </div>
+
+                <!-- Event 8 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1938</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Sept 1938</span>
+                        <h3 class="text-lg font-bold text-slate-900">Munich Agreement & Policy of Appeasement</h3>
+                        <p class="text-slate-600 text-sm mt-2">Britain and France yield to Hitler's demand for the Sudetenland in Czechoslovakia. Neville Chamberlain declares "Peace for our time", but Hitler breaks the pact months later.</p>
+                        <span class="inline-block mt-3 text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 4: WWII Europe</span>
+                    </div>
+                </div>
+
+                <!-- Event 9 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1939</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Sept 1, 1939</span>
+                        <h3 class="text-lg font-bold text-slate-900">Invasion of Poland & Outbreak of WWII in Europe</h3>
+                        <p class="text-slate-600 text-sm mt-2">Germany invades Poland after signing the Nazi-Soviet Non-Aggression Pact. Britain and France declare war on Germany two days later, starting WWII in Europe.</p>
+                        <span class="inline-block mt-3 text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 4: WWII Europe</span>
+                    </div>
+                </div>
+
+                <!-- Event 10 -->
+                <div class="relative flex flex-col sm:flex-row items-start group">
+                    <div class="hidden sm:block absolute -left-32 w-28 text-right pr-4 font-black text-indigo-600 text-lg">1941</div>
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white shadow"></div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition w-full ml-4 sm:ml-6">
+                        <span class="sm:hidden text-xs font-bold text-indigo-600 uppercase tracking-wider block mb-1">Dec 7, 1941</span>
+                        <h3 class="text-lg font-bold text-slate-900">Pearl Harbor Attack & War in the Pacific</h3>
+                        <p class="text-slate-600 text-sm mt-2">Japan launches a surprise attack on the US naval base at Pearl Harbor, Hawaii. The USA enters World War II on the Allied side.</p>
+                        <span class="inline-block mt-3 text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-md">Ch 5: WWII Asia-Pacific</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 4: QUIZ ENGINE SECTION -->
+        <section id="tab-quiz" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Exam Assessment Quiz</h1>
+                    <p class="text-slate-600 text-sm sm:text-base mt-1">Test your knowledge across multiple-choice questions designed for Chapters 1 through 5.</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm font-semibold text-slate-500">Score: <span id="quiz-score" class="text-indigo-600 font-extrabold text-lg">0</span>/10</span>
+                    <button onclick="resetQuiz()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition">Reset</button>
+                </div>
+            </div>
+
+            <!-- Quiz Card Container -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-3xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="quiz-chapter-tag" class="text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Chapter 1</span>
+                    <span class="text-sm font-medium text-slate-400">Question <span id="quiz-index">1</span> of <span id="quiz-total">10</span></span>
+                </div>
+
+                <h2 id="quiz-question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-6">Loading Question...</h2>
+
+                <div id="quiz-options-container" class="space-y-3 mb-6">
+                    <!-- Options populated via JS -->
+                </div>
+
+                <div id="quiz-feedback" class="hidden p-4 rounded-xl mb-6 text-sm font-medium">
+                    <!-- Feedback populated via JS -->
+                </div>
+
+                <div class="flex justify-end">
+                    <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition">
+                        Next Question <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: PEEL ESSAY BUILDER SECTION -->
+        <section id="tab-peel" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">PEEL Essay Practice & Builder</h1>
+                <p class="text-slate-600 text-sm sm:text-base mt-1">Structure high-scoring history essay paragraphs using the PEEL framework (Point, Evidence, Explanation, Link).</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Left Input Form -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-sliders text-indigo-600 mr-2"></i> Paragraph Structure Inputs
+                    </h2>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">P - Point (Argument)</label>
+                        <input type="text" id="peel-point" placeholder="e.g., The main reason WWII broke out in Europe was the policy of appeasement..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">E - Evidence (Historical Facts/Dates)</label>
+                        <textarea id="peel-evidence" rows="2" placeholder="e.g., In September 1938, Britain and France signed the Munich Agreement, ceding Sudetenland..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">E - Explanation (Analysis & Impact)</label>
+                        <textarea id="peel-explanation" rows="3" placeholder="e.g., This convinced Hitler that Western democracies were weak and unwilling to fight, encouraging him to invade Poland..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">L - Link (Reconnect to Essay Question)</label>
+                        <input type="text" id="peel-link" placeholder="e.g., Therefore, appeasement directly accelerated the pathway toward war in 1939." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    </div>
+
+                    <div class="flex space-x-3 pt-2">
+                        <button onclick="generatePEEL()" class="flex-1 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition">Assemble Paragraph</button>
+                        <button onclick="loadPEELSample()" class="py-2.5 px-4 bg-slate-200 text-slate-700 rounded-xl font-semibold hover:bg-slate-300 transition">Load Sample</button>
+                    </div>
+                </div>
+
+                <!-- Right Live Preview Output -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-bold flex items-center text-amber-400">
+                                <i class="fa-solid fa-paragraph mr-2"></i> Assembled Essay Paragraph
+                            </h2>
+                            <button onclick="copyPEELText()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+                                <i class="fa-solid fa-copy mr-1"></i> Copy Text
+                            </button>
+                        </div>
+                        
+                        <div id="peel-output" class="bg-slate-950 p-5 rounded-xl border border-slate-800 text-sm leading-relaxed text-slate-300 space-y-2 min-h-[200px]">
+                            <p class="text-slate-500 italic">Fill out the fields on the left and click "Assemble Paragraph" to generate your structured PEEL analysis here...</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-info text-amber-400 mr-1"></i> Exam Tip: Always link back directly to the question keywords!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Comprehensive Notes Data
+        const notesData = {
+            1: {
+                title: "Chapter 1: World War I & Peace Settlements",
+                subtitle: "Treaty of Versailles and Post-WWI International Order",
+                sections: [
+                    {
+                        heading: "1. The Context of Paris Peace Conference (1919)",
+                        content: "Following the Allied victory in November 1918, leaders met in Paris to determine the peace terms for defeated Central Powers. The Big Three dominated decisions: Woodrow Wilson (USA), Georges Clemenceau (France), and David Lloyd George (Britain)."
+                    },
+                    {
+                        heading: "2. Clashing Aims of the 'Big Three'",
+                        content: "• <b>France (Clemenceau):</b> Wanted to punish Germany harshly, cripple its economy, and dismantle its army to prevent future invasions.<br>• <b>USA (Wilson):</b> Proposed the 14 Points promoting self-determination, disarmament, and the League of Nations to avoid future conflicts.<br>• <b>Britain (Lloyd George):</b> Wanted a balanced compromise; punish Germany enough to satisfy British public, but preserve Germany economically for trade."
+                    },
+                    {
+                        heading: "3. Terms of the Treaty of Versailles (TRAIN)",
+                        content: "• <b>Territory:</b> Lost Alsace-Lorraine to France, Polish Corridor created, all colonies confiscated.<br>• <b>Reparations:</b> Fixed at massive £6.6 billion in 1921.<br>• <b>Armed Forces:</b> Army capped at 100,000 men, no conscription, no tanks, sub warfare, or air force.<br>• <b>Industrial Areas / War Guilt:</b> Rhineland demilitarized; Clause 231 forced Germany to accept full war guilt."
+                    },
+                    {
+                        heading: "4. Impact on Germany & Resentment",
+                        content: "Germans viewed the treaty as a <i>Diktat</i> (dictated peace). It led to severe economic destabilization (1923 Hyperinflation) and provided political ammunition for extreme groups like the Nazi Party."
+                    }
+                ],
+                terms: [
+                    { term: "Diktat", def: "Imposed peace signed without negotiation." },
+                    { term: "War Guilt Clause (Art. 231)", def: "Statement forcing Germany to accept total blame for initiating WWI." },
+                    { term: "Self-Determination", def: "The principle that nations should be free to govern themselves." }
+                ]
+            },
+            2: {
+                title: "Chapter 2: League of Nations",
+                subtitle: "Structure, Successes, Weaknesses, and Ultimate Collapse",
+                sections: [
+                    {
+                        heading: "1. Aims & Structure",
+                        content: "Formed in 1920 to guarantee collective security and prevent war through diplomacy. Key bodies included the Assembly, the Council (permanent members: Britain, France, Italy, Japan), and the Secretariat."
+                    },
+                    {
+                        heading: "2. Successes in the 1920s",
+                        content: "• Resolved border disputes: Aaland Islands (1921), Upper Silesia (1921), Greece-Bulgaria border dispute (1925).<br>• Humanitarian achievements: Fought diseases, repatriated 400,000 prisoners of war, targeted human trafficking."
+                    },
+                    {
+                        heading: "3. Major Weaknesses & Failures",
+                        content: "• <b>Absence of Major Powers:</b> USA never joined (isolationism); USSR and Germany initially excluded.<br>• <b>Lack of Army:</b> Depended on military forces of member states who were reluctant to fight.<br>• <b>Unanimous Voting:</b> Made fast decision-making virtually impossible."
+                    },
+                    {
+                        heading: "4. Fatal Crises in 1930s",
+                        content: "• <b>Manchurian Crisis (1931):</b> Japan invaded Manchuria. League issued Lytton Report; Japan ignored it and resigned.<br>• <b>Abyssinian Crisis (1935):</b> Italy invaded Abyssinia. League imposed weak sanctions (excluding oil), failing to act decisively due to British/French fear of pushing Mussolini into Hitler's alliance."
+                    }
+                ],
+                terms: [
+                    { term: "Collective Security", def: "Agreement where an aggression on one member is treated as an aggression against all." },
+                    { term: "Economic Sanctions", def: "Commercial and financial penalties applied by countries against a targeted self-governing state." }
+                ]
+            },
+            3: {
+                title: "Chapter 3: Interwar Period & Rise of Dictators",
+                subtitle: "Fascism in Italy, Nazism in Germany, and Militarism in Japan",
+                sections: [
+                    {
+                        heading: "1. The Impact of the Great Depression (1929)",
+                        content: "The Wall Street Crash devastated global economies. Mass unemployment and poverty crippled democratic governments, encouraging populations to turn to radical ideological alternatives."
+                    },
+                    {
+                        heading: "2. Fascist Italy (Mussolini)",
+                        content: "Capitalized on post-WWI disappointment, economic chaos, and fear of communism. Mussolini seized power following the 1922 March on Rome, establishing a totalitarian dictatorship."
+                    },
+                    {
+                        heading: "3. Nazi Germany (Hitler)",
+                        content: "Exploited anger over the Versailles Treaty and economic ruin during the Great Depression. Hitler promised jobs, national pride, and rearmament. Appointed Chancellor in 1933, he dismantled democracy through the Reichstag Fire and Enabling Act."
+                    },
+                    {
+                        heading: "4. Militaristic Japan",
+                        content: "Faced economic hardship due to foreign tariffs on silk. The military gained political ascendancy, arguing that territorial expansion into Asia was necessary to secure raw materials (rubber, oil, iron)."
+                    }
+                ],
+                terms: [
+                    { term: "Totalitarianism", def: "System of government that is centralized and dictatorial and requires complete subservience to the state." },
+                    { term: "Enabling Act (1933)", def: "Law allowing Hitler to enact legislation without parliamentary consent." }
+                ]
+            },
+            4: {
+                title: "Chapter 4: Outbreak of World War II in Europe",
+                subtitle: "German Expansionism and the Failure of Appeasement",
+                sections: [
+                    {
+                        heading: "1. Hitler's Foreign Policy Goals",
+                        content: "• Abolish Treaty of Versailles.<br>• Achieve <i>Lebensraum</i> (living space) in Eastern Europe.<br>• Unite all German-speaking peoples into a Greater Germany (<i>Grossdeutschland</i>)."
+                    },
+                    {
+                        heading: "2. Steps to War (1935–1939)",
+                        content: "• <b>1935:</b> Conscription & Rearmament.<br>• <b>1936:</b> Remilitarization of the Rhineland.<br>• <b>1938:</b> <i>Anschluss</i> (Annexation of Austria) & Munich Crisis (Sudetenland).<br>• <b>1939:</b> Annexation of rest of Czechoslovakia & Invasion of Poland."
+                    },
+                    {
+                        heading: "3. The Policy of Appeasement",
+                        content: "Adopted by Britain (Chamberlain) and France. Based on belief that Hitler's demands were reasonable and war must be avoided. Failed because it emboldened Hitler to make ever-greater demands."
+                    },
+                    {
+                        heading: "4. Nazi-Soviet Non-Aggression Pact (1939)",
+                        content: "Signed in August 1939 between Hitler and Stalin. Agreed not to attack each other and secretly planned to divide Poland. Secured Hitler's eastern border, allowing him to invade Poland on Sept 1, 1939, triggering WWII."
+                    }
+                ],
+                terms: [
+                    { term: "Lebensraum", def: "Nazi policy seeking living space in Eastern Europe for the Aryan race." },
+                    { term: "Appeasement", def: "Diplomatic policy of making concessions to an aggressive power to avoid conflict." }
+                ]
+            },
+            5: {
+                title: "Chapter 5: Outbreak of WWII in the Asia-Pacific",
+                subtitle: "Japanese Aggression, American Embargo, and Pearl Harbor",
+                sections: [
+                    {
+                        heading: "1. Japanese Imperial Expansionism",
+                        content: "Driven by militarism, need for economic self-sufficiency, and ambition to create the 'Greater East Asia Co-Prosperity Sphere' free from Western colonial dominance."
+                    },
+                    {
+                        heading: "2. Second Sino-Japanese War (1937)",
+                        content: "Following the Marco Polo Bridge Incident, Japan launched full-scale war against China, committing atrocities such as the Nanking Massacre, leading to international condemnation."
+                    },
+                    {
+                        heading: "3. US Oil Embargo & Breakdown of Relations",
+                        content: "In response to Japanese expansion into French Indochina (1940-1941), the USA imposed severe economic sanctions, freezing Japanese assets and placing an oil embargo. Japan was left with a choice: withdraw or seize oil resources in Southeast Asia."
+                    },
+                    {
+                        heading: "4. Attack on Pearl Harbor (Dec 7, 1941)",
+                        content: "Japan launched a surprise attack on the US Pacific Fleet at Pearl Harbor, Hawaii, aiming to paralyze American naval power while Japan seized Dutch East Indies and Malaya. The attack drew the USA directly into World War II."
+                    }
+                ],
+                terms: [
+                    { term: "Greater East Asia Co-Prosperity Sphere", def: "Japanese concept promoting Asian self-determination under Japanese leadership." },
+                    { term: "Oil Embargo", def: "Prohibition of oil trade, which threatened Japan's military capabilities." }
+                ]
+            }
+        };
+
+        // Flashcard Dataset
+        const flashcardsData = [
+            { ch: 1, q: "What was Clause 231 of the Treaty of Versailles?", a: "The War Guilt Clause, which forced Germany to accept complete blame for causing World War I." },
+            { ch: 1, q: "Name the 'Big Three' leaders present at the Paris Peace Conference in 1919.", a: "Woodrow Wilson (USA), Georges Clemenceau (France), and David Lloyd George (Britain)." },
+            { ch: 1, q: "What was the total figure set for German reparations in 1921?", a: "£6.6 billion." },
+            { ch: 1, q: "What military restrictions were placed on Germany by the Treaty of Versailles?", a: "Army limited to 100,000 men, no tanks, no air force, no submarines, and demilitarization of the Rhineland." },
+            { ch: 2, q: "Why did the USA fail to join the League of Nations?", a: "The US Senate voted against joining due to strong isolationist policies and fear of being dragged into European wars." },
+            { ch: 2, q: "What were two main weaknesses of the League of Nations' structure?", a: "Absence of major powers (like USA), lack of an independent army, and requirement for unanimous voting." },
+            { ch: 2, q: "How did the League respond to the Manchurian Crisis (1931)?", a: "It sent the Lytton Commission to investigate, condemned Japan, but took no concrete action or sanctions." },
+            { ch: 2, q: "Why was the Abyssinian Crisis (1935) fatal for the League's credibility?", a: "The League failed to stop Mussolini's invasion, imposing half-hearted sanctions and revealing collective security was ineffective." },
+            { ch: 3, q: "What economic event in 1929 fueled political extremism globally?", a: "The Wall Street Crash and the resulting Great Depression." },
+            { ch: 3, q: "When was Hitler appointed Chancellor of Germany?", a: "January 30, 1933." },
+            { ch: 3, q: "What was the Enabling Act of 1933?", a: "A law passed by the Reichstag that allowed Hitler to pass laws without parliament's approval for 4 years." },
+            { ch: 4, q: "What does 'Lebensraum' mean in the context of Nazi foreign policy?", a: "'Living space'—Hitler's goal to acquire territory in Eastern Europe for the German population." },
+            { ch: 4, q: "What was the Munich Agreement of September 1938?", a: "A pact allowing Nazi Germany to annex the Sudetenland in Czechoslovakia in exchange for Hitler's promise not to seek more land." },
+            { ch: 4, q: "Which British Prime Minister championed the policy of Appeasement?", a: "Neville Chamberlain." },
+            { ch: 4, q: "What secret provision was contained in the Nazi-Soviet Non-Aggression Pact (1939)?", a: "An agreement between Germany and the USSR to invade and divide Poland between themselves." },
+            { ch: 5, q: "Why did Japan invade Manchuria in 1931?", a: "To secure vital raw materials (coal, iron, land) to combat economic depression and expand its empire." },
+            { ch: 5, q: "What trigger led Japan to plan the attack on Pearl Harbor?", a: "The US imposition of a total oil embargo and asset freeze against Japan in 1941." },
+            { ch: 5, q: "On what exact date did Japan attack Pearl Harbor?", a: "December 7, 1941." },
+            { ch: 5, q: "What was the 'Greater East Asia Co-Prosperity Sphere'?", a: "Japan's propaganda concept for an Asian bloc led by Japan, free from Western colonial rule." }
+        ];
+
+        // Quiz Data
+        const quizData = [
+            {
+                ch: 1,
+                question: "Which nation's leader proposed the 'Fourteen Points' at the Paris Peace Conference?",
+                options: ["Britain", "France", "United States", "Italy"],
+                correct: 2,
+                explanation: "Woodrow Wilson of the USA proposed the 14 Points to promote long-term world peace and self-determination."
+            },
+            {
+                ch: 1,
+                question: "What term describes the German perception of the Versailles Treaty as a 'dictated peace'?",
+                options: ["Anschluss", "Diktat", "Putsch", "Lebensraum"],
+                correct: 1,
+                explanation: "Diktat refers to a peace settlement imposed on a defeated nation without room for negotiation."
+            },
+            {
+                ch: 2,
+                question: "Which major power never joined the League of Nations?",
+                options: ["United States", "Great Britain", "France", "Japan"],
+                correct: 0,
+                explanation: "Despite President Wilson creating the concept, the US Senate refused to ratify the treaty to remain isolationist."
+            },
+            {
+                ch: 2,
+                question: "The Lytton Commission was set up by the League of Nations to investigate which crisis?",
+                options: ["Abyssinian Crisis", "Corfu Incident", "Ruhr Invasion", "Manchurian Crisis"],
+                correct: 3,
+                explanation: "The Lytton Commission investigated Japan's invasion of Manchuria following the Mukden Incident."
+            },
+            {
+                ch: 3,
+                question: "Hitler utilized which event in 1933 to crack down on communist opponents and gain emergency powers?",
+                options: ["Night of the Long Knives", "Reichstag Fire", "Beer Hall Putsch", "March on Rome"],
+                correct: 1,
+                explanation: "The Reichstag Fire in Feb 1933 was blamed on communists, allowing Hitler to suspend civil liberties."
+            },
+            {
+                ch: 3,
+                question: "In what year did Mussolini establish his Fascist government in Italy?",
+                options: ["1919", "1922", "1933", "1936"],
+                correct: 1,
+                explanation: "Mussolini came to power in October 1922 after the March on Rome."
+            },
+            {
+                ch: 4,
+                question: "Which territory was remilitarized by German troops in March 1936 in defiance of Versailles?",
+                options: ["Sudetenland", "Rhineland", "Saarland", "Danzig"],
+                correct: 1,
+                explanation: "Hitler sent troops into the demilitarized Rhineland in 1936; Britain and France did not intervene."
+            },
+            {
+                ch: 4,
+                question: "The Munich Conference of 1938 granted Germany which portion of Czechoslovakia?",
+                options: ["Bohemia", "Moravia", "Sudetenland", "Bratislava"],
+                correct: 2,
+                explanation: "The Sudetenland contained over 3 million German speakers and key defensive fortifications."
+            },
+            {
+                ch: 5,
+                question: "What critical resource embargo by the US in 1941 crippled Japanese military capability?",
+                options: ["Rubber", "Steel", "Oil", "Foodstuffs"],
+                correct: 2,
+                explanation: "Japan imported 80% of its oil from the US; the oil embargo forced Japan to decide between capitulation or war."
+            },
+            {
+                ch: 5,
+                question: "What event officially brought the United States into World War II?",
+                options: ["Invasion of Poland", "Fall of Paris", "Bombing of Pearl Harbor", "Marco Polo Bridge Incident"],
+                correct: 2,
+                explanation: "The Japanese surprise attack on Pearl Harbor on Dec 7, 1941 prompted US entry into the war."
+            }
+        ];
+
+        // State variables
+        let currentFilteredCards = [...flashcardsData];
+        let currentCardIndex = 0;
+        let quizCurrentIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        // On Page Load Initialization
+        window.onload = function() {
+            selectChapterNotes(1);
+            renderFlashcard();
+            renderQuizQuestion();
+        };
+
+        // Navigation Switching
+        function switchTab(tabId) {
+            const tabs = ['notes', 'flashcards', 'timeline', 'quiz', 'peel'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`nav-${t}`);
+                if (btn) {
+                    btn.classList.remove('text-amber-400', 'bg-slate-800');
+                    btn.classList.add('text-slate-300');
+                }
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-amber-400', 'bg-slate-800');
+                activeBtn.classList.remove('text-slate-300');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Study Notes
+        function selectChapterNotes(chNum) {
+            // Update button UI
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`note-btn-${i}`);
+                if (i === chNum) {
+                    btn.className = "ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-indigo-600 text-white shadow";
+                } else {
+                    btn.className = "ch-note-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-100 text-slate-700 hover:bg-slate-200";
+                }
+            }
+
+            const data = notesData[chNum];
+            const container = document.getElementById('notes-content-container');
+
+            let sectionsHTML = data.sections.map(sec => `
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">${sec.heading}</h3>
+                    <p class="text-slate-700 text-sm sm:text-base leading-relaxed">${sec.content}</p>
+                </div>
+            `).join('');
+
+            let termsHTML = data.terms.map(t => `
+                <div class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-3.5">
+                    <span class="font-bold text-indigo-900 text-sm block mb-0.5">${t.term}</span>
+                    <span class="text-slate-600 text-xs">${t.def}</span>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-4 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Chapter ${chNum} Overview</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 mt-2">${data.title}</h2>
+                    <p class="text-slate-500 text-sm mt-1">${data.subtitle}</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        ${sectionsHTML}
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 h-fit space-y-3">
+                        <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wider flex items-center">
+                            <i class="fa-solid fa-key text-amber-500 mr-2"></i> Essential Terms
+                        </h4>
+                        <div class="space-y-2.5">
+                            ${termsHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Flashcards Logic
+        function flipCard() {
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.toggle('card-flipped');
+        }
+
+        function filterFlashcards() {
+            const val = document.getElementById('flashcard-filter').value;
+            if (val === 'all') {
+                currentFilteredCards = [...flashcardsData];
+            } else {
+                currentFilteredCards = flashcardsData.filter(c => c.ch == val);
+            }
+            currentCardIndex = 0;
+            // Ensure card is unflipped when changing
+            document.getElementById('flashcard-inner').classList.remove('card-flipped');
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            if (currentFilteredCards.length === 0) return;
+            const card = currentFilteredCards[currentCardIndex];
+            document.getElementById('card-chapter-tag').innerText = `Chapter ${card.ch}`;
+            document.getElementById('card-question').innerText = card.q;
+            document.getElementById('card-answer').innerText = card.a;
+            document.getElementById('card-current-num').innerText = currentCardIndex + 1;
+            document.getElementById('card-total-num').innerText = currentFilteredCards.length;
+        }
+
+        function nextCard() {
+            document.getElementById('flashcard-inner').classList.remove('card-flipped');
+            setTimeout(() => {
+                currentCardIndex = (currentCardIndex + 1) % currentFilteredCards.length;
+                renderFlashcard();
+            }, 150);
+        }
+
+        function prevCard() {
+            document.getElementById('flashcard-inner').classList.remove('card-flipped');
+            setTimeout(() => {
+                currentCardIndex = (currentCardIndex - 1 + currentFilteredCards.length) % currentFilteredCards.length;
+                renderFlashcard();
+            }, 150);
+        }
+
+        function shuffleCards() {
+            document.getElementById('flashcard-inner').classList.remove('card-flipped');
+            setTimeout(() => {
+                for (let i = currentFilteredCards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [currentFilteredCards[i], currentFilteredCards[j]] = [currentFilteredCards[j], currentFilteredCards[i]];
+                }
+                currentCardIndex = 0;
+                renderFlashcard();
+            }, 150);
+        }
+
+        // Quiz Logic
+        function renderQuizQuestion() {
+            quizAnswered = false;
+            const q = quizData[quizCurrentIndex];
+            document.getElementById('quiz-chapter-tag').innerText = `Chapter ${q.ch}`;
+            document.getElementById('quiz-index').innerText = quizCurrentIndex + 1;
+            document.getElementById('quiz-total').innerText = quizData.length;
+            document.getElementById('quiz-question-text').innerText = q.question;
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = '';
+
+            const feedbackEl = document.getElementById('quiz-feedback');
+            feedbackEl.classList.add('hidden');
+
+            const nextBtn = document.getElementById('quiz-next-btn');
+            nextBtn.classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 text-sm font-medium transition flex items-center justify-between";
+                btn.innerHTML = `<span><strong class="mr-2 text-slate-400">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span> <i class="fa-regular fa-circle text-slate-300"></i>`;
+                btn.onclick = () => checkQuizAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const q = quizData[quizCurrentIndex];
+            const optionsContainer = document.getElementById('quiz-options-container');
+            const buttons = optionsContainer.children;
+            const feedbackEl = document.getElementById('quiz-feedback');
+            const nextBtn = document.getElementById('quiz-next-btn');
+
+            if (selectedIdx === q.correct) {
+                quizScore++;
+                document.getElementById('quiz-score').innerText = quizScore;
+                buttons[selectedIdx].className = "w-full text-left p-4 rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-900 text-sm font-semibold flex items-center justify-between";
+                buttons[selectedIdx].querySelector('i').className = "fa-solid fa-circle-check text-emerald-600";
+                
+                feedbackEl.className = "p-4 rounded-xl mb-6 text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-800";
+                feedbackEl.innerHTML = `<strong>Correct!</strong> ${q.explanation}`;
+            } else {
+                buttons[selectedIdx].className = "w-full text-left p-4 rounded-xl border border-rose-500 bg-rose-50 text-rose-900 text-sm font-semibold flex items-center justify-between";
+                buttons[selectedIdx].querySelector('i').className = "fa-solid fa-circle-xmark text-rose-600";
+
+                // Highlight correct answer
+                buttons[q.correct].className = "w-full text-left p-4 rounded-xl border border-emerald-500 bg-emerald-50 text-emerald-900 text-sm font-semibold flex items-center justify-between";
+                buttons[q.correct].querySelector('i').className = "fa-solid fa-circle-check text-emerald-600";
+
+                feedbackEl.className = "p-4 rounded-xl mb-6 text-sm font-medium bg-rose-50 border border-rose-200 text-rose-800";
+                feedbackEl.innerHTML = `<strong>Incorrect.</strong> ${q.explanation}`;
+            }
+
+            feedbackEl.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            quizCurrentIndex++;
+            if (quizCurrentIndex < quizData.length) {
+                renderQuizQuestion();
+            } else {
+                // Quiz Complete Screen
+                const container = document.getElementById('quiz-options-container').parentElement;
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h2 class="text-2xl font-black text-slate-900 mb-2">Quiz Completed!</h2>
+                        <p class="text-slate-600 mb-6">Your final score is <span class="font-extrabold text-indigo-600 text-xl">${quizScore}</span> out of ${quizData.length}</p>
+                        <button onclick="resetQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition">Retake Quiz</button>
+                    </div>
+                `;
+            }
+        }
+
+        function resetQuiz() {
+            quizScore = 0;
+            quizCurrentIndex = 0;
+            document.getElementById('quiz-score').innerText = quizScore;
+            // Re-render initial quiz structure if completed
+            const section = document.getElementById('tab-quiz');
+            section.innerHTML = `
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Exam Assessment Quiz</h1>
+                        <p class="text-slate-600 text-sm sm:text-base mt-1">Test your knowledge across multiple-choice questions designed for Chapters 1 through 5.</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm font-semibold text-slate-500">Score: <span id="quiz-score" class="text-indigo-600 font-extrabold text-lg">0</span>/10</span>
+                        <button onclick="resetQuiz()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition">Reset</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-3xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <span id="quiz-chapter-tag" class="text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">Chapter 1</span>
+                        <span class="text-sm font-medium text-slate-400">Question <span id="quiz-index">1</span> of <span id="quiz-total">10</span></span>
+                    </div>
+
+                    <h2 id="quiz-question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-6">Loading Question...</h2>
+
+                    <div id="quiz-options-container" class="space-y-3 mb-6"></div>
+
+                    <div id="quiz-feedback" class="hidden p-4 rounded-xl mb-6 text-sm font-medium"></div>
+
+                    <div class="flex justify-end">
+                        <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition">
+                            Next Question <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            renderQuizQuestion();
+        }
+
+        // PEEL Generator Logic
+        function generatePEEL() {
+            const point = document.getElementById('peel-point').value.trim();
+            const evidence = document.getElementById('peel-evidence').value.trim();
+            const explanation = document.getElementById('peel-explanation').value.trim();
+            const link = document.getElementById('peel-link').value.trim();
+
+            const outputContainer = document.getElementById('peel-output');
+
+            if (!point && !evidence && !explanation && !link) {
+                outputContainer.innerHTML = `<p class="text-slate-500 italic">Please fill out at least one field to see your assembled essay paragraph...</p>`;
+                return;
+            }
+
+            outputContainer.innerHTML = `
+                <p>
+                    <span class="bg-indigo-900/60 text-indigo-300 font-semibold px-1 rounded">${point}</span>
+                    <span class="bg-amber-900/60 text-amber-300 font-semibold px-1 rounded">${evidence}</span>
+                    <span class="bg-emerald-900/60 text-emerald-300 font-semibold px-1 rounded">${explanation}</span>
+                    <span class="bg-purple-900/60 text-purple-300 font-semibold px-1 rounded">${link}</span>
+                </p>
+            `;
+        }
+
+        function loadPEELSample() {
+            document.getElementById('peel-point').value = "A primary cause for the outbreak of World War II in Europe was the failure of the policy of appeasement.";
+            document.getElementById('peel-evidence').value = "This was demonstrated during the Munich Crisis in September 1938, when Britain and France allowed Germany to annex the Sudetenland in Czechoslovakia without consulting the Czech government.";
+            document.getElementById('peel-explanation').value = "By continually giving in to Hitler's aggressive expansionist demands, Western democracies convinced Hitler that Britain and France were weak and unwilling to fight, which directly emboldened him to invade Poland in 1939.";
+            document.getElementById('peel-link').value = "Consequently, appeasement failed to preserve peace and instead accelerated the onset of war in Europe.";
+            generatePEEL();
+        }
+
+        function copyPEELText() {
+            const p = document.getElementById('peel-output').innerText;
+            if (p.includes("Please fill out")) return;
+            
+            // Clipboard fallback as per constraints
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = p;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyBtn = event.currentTarget;
+            copyBtn.innerHTML = `<i class="fa-solid fa-check text-emerald-400 mr-1"></i> Copied!`;
+            setTimeout(() => {
+                copyBtn.innerHTML = `<i class="fa-solid fa-copy mr-1"></i> Copy Text`;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
